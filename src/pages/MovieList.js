@@ -15,20 +15,6 @@ class MovieList extends Component {
       loading: true,
     }
   }
-  // fetchMovies() { 
-  //   this.setState(
-  //     { loading: true },
-  //     async () => { 
-  //       const data = await movieAPI.getMovies();
-  //       this.setState({
-  //         movies: data,
-  //         loading: false
-  //       }
-  //       );
-  //     }
-  //     );
-  //   } 
-  
   
   fetchMovies() {
     this.setState(
@@ -44,11 +30,6 @@ class MovieList extends Component {
 
     );
   }
-
-  // renderMovieList() {
-  //   const { movies } = this.state;
-  //   movies.map((movie) => <MovieCard key={movie.title} movie={movie} />)
-  // }
 
   componentDidMount() {
     this.fetchMovies();
