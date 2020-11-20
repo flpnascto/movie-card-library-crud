@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { Loading, MovieForm } from '../components';
 import * as movieAPI from '../services/movieAPI';
@@ -14,29 +15,12 @@ class EditMovie extends Component {
       movie: {},
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.fetchMovie = this.fetchMovie.bind(this)
+    this.fetchMovie = this.fetchMovie.bind(this);
   }
 
-  // id: 1,
-  //   title: 'Kingsglaive',
-  //   subtitle: 'Final Fantasy XV',
-  //   storyline: "King Regis, who oversees the land of Lucis, commands his army of soldiers to protect the kingdom from the Niflheim empire's plans to steal the sacred crystal.",
-  //   rating: 4.5,
-  //   imagePath: 'images/Kingsglaive_Final_Fantasy_XV.jpg',
-  //   bookmarked: true,
-  //   genre: 'action',
-
-  handleSubmit(updatedMovie) {
-    this.setState(
-      {status: 'loading'},
-      async () => {
-        await movieAPI.updateMovie(updatedMovie);
-        this.setState({
-          shouldRedirect: true,
-        })
-      }
-    );
-
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    this.fetchMovie(id);
   }
 
   fetchMovie(movieId) {
@@ -48,13 +32,20 @@ class EditMovie extends Component {
           movie: requestResponse,
           status: 'loaded',
         });
-      }
+      },
     );
   }
 
-  componentDidMount() {
-    const { id } = this.props.match.params;
-    this.fetchMovie(id);
+  handleSubmit(updatedMovie) {
+    this.setState(
+      { status: 'loading' },
+      async () => {
+        await movieAPI.updateMovie(updatedMovie);
+        this.setState({
+          shouldRedirect: true,
+        });
+      },
+    );
   }
 
   render() {
@@ -64,7 +55,7 @@ class EditMovie extends Component {
     }
 
     if (status === 'loading') {
-      return (<Loading /> );
+      return (<Loading />);
     }
 
     return (
@@ -74,5 +65,13 @@ class EditMovie extends Component {
     );
   }
 }
+
+EditMovie.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default EditMovie;

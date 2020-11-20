@@ -13,9 +13,13 @@ class MovieList extends Component {
     this.state = {
       movies: [],
       loading: true,
-    }
+    };
   }
-  
+
+  componentDidMount() {
+    this.fetchMovies();
+  }
+
   fetchMovies() {
     this.setState(
       { loading: true },
@@ -23,16 +27,11 @@ class MovieList extends Component {
         const requestResponse = await movieAPI.getMovies();
         this.setState({
           movies: requestResponse,
-          loading: false
-        }
+          loading: false,
+        },
         );
-      }
-
+      },
     );
-  }
-
-  componentDidMount() {
-    this.fetchMovies();
   }
 
   render() {
